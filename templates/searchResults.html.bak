@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<title>Search Results</title>
+    
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon"/>
+
+	<link rel="stylesheet" href="/static/bootstrap-v4/css/newtab.css?version=v1.6.3" type="text/css" />
+	<link rel="stylesheet" href="/static/bootstrap-v4/css/bootstrap/bootstrap.min.css?version=v1.6.3" type="text/css" />
+	<link rel="stylesheet" href="/static/bootstrap-v4/css/elusive-icons/elusive-icons.min.css?version=v1.6.3" type="text/css" />
+	<link rel="stylesheet" href="/static/bootstrap-v4/css/common.css?version=v1.6.3" type="text/css" />
+	<link rel="stylesheet" href="/static/bootstrap-v4/css/list.css?version=v1.6.3" type="text/css" />
+	<link rel="stylesheet" href="/static/bootstrap-v4/css/general.css?version=v1.6.3" type="text/css" />
+	<link rel="stylesheet" href="/static/bootstrap-v4/css/plugins/animate.min.css?version=v1.6.3" type="text/css" />
+	<link rel="stylesheet" href="/static/bootstrap-v4/css/main.css?version=v1.6.3" type="text/css" />
+
+	<meta name="description" content="" />
+	<meta name="robots" content="noindex, nofollow" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body>
+<style>
+    @media (min-width: 576px) {
+        .container .scroll-if-required {
+            max-width: 540px;
+            width: 540px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .container .scroll-if-required {
+            max-width: 720px;
+            width: 720px;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .container .scroll-if-required {
+            max-width: 968px;
+            width: 968px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .container .scroll-if-required {
+            width: 1168px;
+            max-width: 1168px;
+        }
+    }
+</style>
+<br/>
+<div class="container-fluid gc-container">
+
+<div class="row">
+	<div class="table-section">
+		<div class="table-label">
+			<div class="floatL l5"><h1>Search Results</h1></div>
+			<div class="clear"></div>
+		</div>
+		<div class="table-container">
+			<form action="" method="post" autocomplete="off" id="gcrud-search-form">
+				
+
+
+				<div class="scroll-if-required">
+					<table class="table table-bordered grocery-crud-table table-hover">
+						<thead>
+							<tr>
+								<th>Edit Record</th>
+								<th class="column-with-ordering" data-order-by="InvoiceNumber">Invoice Number</th>
+								<th class="column-with-ordering" data-order-by="Institution">Institution</th>
+								<th class="column-with-ordering" data-order-by="AdminKey">Instructor Key</th>
+								<th class="column-with-ordering" data-order-by="Instructor">Instructor</th>
+								<th class="column-with-ordering" data-order-by="AdminCount">Count</th>
+								<th class="column-with-ordering" data-order-by="InvoiceDate">Invoice Date</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							{% for user in users %}
+
+							<tr>
+								<td>
+									<div class="only-desktops" style="white-space: nowrap">
+										<a class="btn btn-default btn-outline-dark" href="{{ url_for('edit', id=user.id) }}">
+										<i class="el el-pencil"></i> Edit</a>
+									</div>
+								</td>
+								<td>{{ user.InvoiceNumber }}</td>
+								<td>{{ user.Institution }}</td>
+								<td>{{ user.AdminKey }}</td>
+								<td>{{ user.Instructor }}</td>
+								<td>{{ user.Count }}</td>
+								<td>{{ user.InvoiceDate }}</td>
+							</tr>
+
+							{% endfor %}
+						
+						</tbody>
+					</table>
+				</div>
+	   
+	   
+	   
+				<!-- Table Footer -->
+				<div class="footer-tools">
+
+					<!-- Pagination Links-->
+						<div class="text-right mt-3">
+							<a href="{{ url_for('searchResults1', page=users.prev_num) }}"
+							   class="btn btn-outline-dark 
+							   {% if users.page == 1 %}disabled{% endif %}">
+								&laquo;
+							</a>
+						<!-- Loop through the number of pages to display a link for each-->
+							{% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+						{% if page_num %}
+						<!-- Check for the active page and set the link to "Active"-->
+									{% if users.page == page_num %}
+									<a href="{{ url_for('searchResults1', page=page_num) }}"
+									   class="btn btn-dark">
+										{{ page_num }}
+									</a>
+									{% else %}
+									<a href="{{ url_for('searchResults1', page=page_num ) }}"
+									   class="btn btn-outline-dark">
+										{{ page_num }}
+									</a>
+									{% endif %}
+								{% else %}
+									...
+								{% endif %}
+							{% endfor %}
+							<a href="{{ url_for('searchResults1', page=users.next_num ) }}"
+							   class="btn btn-outline-dark 
+							   {% if users.page == users.pages %}disabled{% endif %}">
+								&raquo;
+							</a>
+						</div>
+						<p class="text-right mt-3">
+						   Showing page {{ users.page }} of {{ users.pages }}
+						</p>
+			   </div>
+			   <!-- End of: Table Footer -->
+
+			</form>
+		</div>
+	</div>
+
+</div>
+</div>
+        
+<script src="/static/js/jquery-2.2.4.min.js?version=v1.6.3"></script>
+<script src="/static/js/datagrid-v1.5.3.c20c951.min.js?version=v1.6.3"></script>
+</body>
+</html>
